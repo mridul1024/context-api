@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, createContext } from "react";
+import "./App.css";
+import ComponentOne from "./components/ComponentOne";
+
+export const SharedContext = createContext();
 
 function App() {
+  const [count, setCount] = useState(0);
+
+  const contextValues = {
+    counter: count,
+    header: "Current Count",
+    increment: () => {
+      setCount((prev) => prev + 1);
+    },
+    decrement: () => {
+      setCount((prev) => prev - 1);
+    },
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <SharedContext.Provider value={contextValues}>
+        <div className="App">
+          <header className="App-header">
+            <ComponentOne />
+          </header>
+        </div>
+      </SharedContext.Provider>
+    </>
   );
 }
 
